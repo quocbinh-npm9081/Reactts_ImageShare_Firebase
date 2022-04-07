@@ -1,9 +1,20 @@
 import { useNavigate } from 'react-router-dom';
 import { VscArrowLeft } from '@react-icons/all-files/vsc/VscArrowLeft';
 import ForgotForm from '../components/ForgotForm/ForgotForm';
+import { useAppSelector } from '../redux/store.hooks';
+import { useEffect } from 'react';
 const Forgot_password = () => {
 
     const history = useNavigate();
+
+    const { currentUser } = useAppSelector(state => state.auth);
+
+    useEffect(() => {
+
+        if (!currentUser) return history('/login', { replace: true });
+
+    }, [history, currentUser])
+
 
 
     return (

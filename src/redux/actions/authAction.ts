@@ -1,5 +1,5 @@
 import { IRegister, ILogin } from '../types';
-import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
+import { browserLocalPersistence, browserSessionPersistence, createUserWithEmailAndPassword, sendPasswordResetEmail, setPersistence, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from "firebase/auth";
 import { auth, providerFacebook, providerGoogle } from '../../config/firebase';
 import { toast } from 'react-toastify';
 
@@ -45,8 +45,43 @@ export const loginApi = async (user: ILogin) => {
 
         console.log('error' + error.message);
 
+        toast.error('Email or password wrong !', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+        });
+
     }
 }
+
+
+export const signOutApi = async () => {
+
+
+    try {
+        await signOut(auth);
+        return toast('Log out success !', {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: false,
+            progress: undefined,
+        });
+
+    } catch (error: any) {
+
+        toast.error(error.message)
+
+    }
+}
+
+
 
 export const googleApi = async () => {
 
@@ -61,6 +96,7 @@ export const googleApi = async () => {
     } catch (error: any) {
 
         console.log('error' + error.message);
+        toast.error(error.message)
 
     }
 }
@@ -79,6 +115,7 @@ export const facebookApi = async () => {
     } catch (error: any) {
 
         console.log('error' + error.message);
+        toast.error(error.message)
 
     }
 }

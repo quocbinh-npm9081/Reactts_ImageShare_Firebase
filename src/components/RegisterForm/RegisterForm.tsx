@@ -29,7 +29,7 @@ const RegisterForm = () => {
 
         if (currentUser) return history('/', { replace: true });
 
-    }, [history])
+    }, [history, currentUser])
 
 
 

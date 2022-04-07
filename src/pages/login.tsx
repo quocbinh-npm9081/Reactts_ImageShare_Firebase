@@ -10,11 +10,12 @@ const Login = () => {
 
     const { currentUser } = useAppSelector(state => state.auth);
 
+
     useEffect(() => {
 
         if (currentUser) return history('/', { replace: true });
 
-    }, [history])
+    }, [history, currentUser])
 
 
 

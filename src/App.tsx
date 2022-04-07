@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react';
 import './App.css';
 import 'react-toastify/dist/ReactToastify.css';
-
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import { auth } from './config/firebase';
 import { useAppDispatch } from './redux/store.hooks';
 import Route from './route/index';
-
-
 import Header from './components/Header/Header';
 import { onAuthStateChanged, sendEmailVerification, signOut } from 'firebase/auth';
 import { addUser } from './redux/action-slides/auth.slice';
@@ -19,6 +16,7 @@ function App() {
 
 
   const navigate = useNavigate();
+
   const dispatch = useAppDispatch()
 
 
@@ -49,16 +47,20 @@ function App() {
           // console.log(user); // Neu nhu email da~ xac' thuc thi` 
 
           dispatch(addUser(user))
+
         }
 
       } else {
+
+        dispatch(addUser(undefined));
+
+        return navigate('/login');
 
       }
     })
 
 
     return unSubscribe;
-
   }, [])
 
 

@@ -1,13 +1,15 @@
 import React, { FormEvent, useState } from 'react'
-import { toast } from 'react-toastify';
 import { authLogin } from '../../redux/action-slides/auth.slice';
 //import { registerApi } from '../../redux/actions/authAction';
 import { useAppDispatch, useAppSelector } from '../../redux/store.hooks';
 import { Link } from 'react-router-dom';
-import validRegister from '../../utils/validator/register';
-import Error from '../Error/Error';
+import validateLogin from '../../utils/validator/login';
+//import validRegister from '../../utils/validator/register';
+//import Error from '../Error/Error';
+import { toast } from 'react-toastify';
 import Loading from '../Loading/Loading';
 import LoginSocialMedia from './LoginSocialMedia';
+import Error from '../Error/Error';
 const LoginForm = () => {
 
     const [email, setEmail] = useState('');
@@ -25,6 +27,26 @@ const LoginForm = () => {
         e.preventDefault();
 
         const user = { email, password, remember };
+
+        const resultValid_login = validateLogin(user);
+
+        if (resultValid_login.errorLength) {
+
+            setEmail('');
+
+            setPassword('');
+
+            toast.error(() => (<Error errors={resultValid_login.errorMsg} />), {
+                position: "top-right",
+                autoClose: 4000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: false,
+                progress: undefined,
+            });
+        }
+
 
         dispatch(authLogin(user));
 
@@ -47,7 +69,7 @@ const LoginForm = () => {
                         placeholder='youremail@gmail.com'
                         onChange={(e) => { setEmail(e.target.value) }}
                         value={email}
-                        autoComplete="off"
+                        autoComplete="off   "
                     />
                 </div>
                 <div className='my-3'>
