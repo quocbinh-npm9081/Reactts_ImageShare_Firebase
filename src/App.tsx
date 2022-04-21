@@ -4,16 +4,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
 import { auth } from './config/firebase';
-import { useAppDispatch } from './redux/store.hooks';
+import { useAppDispatch, useAppSelector } from './redux/store.hooks';
 import Route from './route/index';
 import Header from './components/Header/Header';
 import { onAuthStateChanged, sendEmailVerification, signOut } from 'firebase/auth';
 import { addUser } from './redux/action-slides/auth.slice';
+import { fetchProfile } from './redux/action-slides/profile.slides';
 
 
 
 function App() {
 
+  const { currentUser } = useAppSelector(state => state.auth)
 
   const navigate = useNavigate();
 
@@ -22,12 +24,10 @@ function App() {
 
   useEffect(() => {
 
-    const unSubscribe = onAuthStateChanged(auth, async (user) => { //  ta tai khoan thanh cong thi` sex goi vao ham` nay`
-
+    const unSubscribe = onAuthStateChanged(auth, async (user) => { //  tao tai khoan thanh cong thi` sex goi vao ham` nay`
 
       //console.log("User dang ki thanh cong" + user);
       //  console.log(user.emailVerified) // Kt xem email da dc xac thuc chua
-
 
       if (user) {
 
@@ -42,13 +42,13 @@ function App() {
 
           return navigate('/email_verified');
 
-        } else { // Nếu user đăng nhập bằng Facebook || Google thì ko cãn xác thực email
+        } // Nếu user đăng nhập bằng Facebook || Google thì ko cãn xác thực email
 
-          // console.log(user); // Neu nhu email da~ xac' thuc thi` 
+        // console.log(user); // Neu nhu email da~ xac' thuc thi` 
 
-          dispatch(addUser(user))
+        dispatch(addUser(user))
 
-        }
+
 
       } else {
 
@@ -60,11 +60,15 @@ function App() {
     })
 
 
+
     return unSubscribe;
-  }, [])
+  }, [dispatch, navigate, currentUser])
 
 
 
+  useEffect(() => {
+    if (currentUser?.uid) dispatch(fetchProfile(currentUser.uid))
+  }, [currentUser, dispatch])
 
 
 

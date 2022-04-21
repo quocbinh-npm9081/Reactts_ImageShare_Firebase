@@ -5,13 +5,13 @@ import { BiUserCircle } from '@react-icons/all-files/bi/BiUserCircle';
 const AvataProfile = () => {
 
     const { currentUser }: any = useAppSelector(state => state.auth);
-
+    const { }: any = useAppSelector(state => state.profile);
     return (
         <div>
             <Link to="/profile" className='flex items-center'>
                 <div className='w-10 h-10 overflow-hidden rounded-full mr-2'>
                     {
-                        currentUser.photoURL ? (
+                        currentUser?.photoURL ? (
 
                             <img src={currentUser.photoURL}
                                 alt={currentUser}
@@ -27,7 +27,7 @@ const AvataProfile = () => {
                 </div>
                 <span className='mr-4 font-semibold capitalize'>
                     {
-                        currentUser.displayName
+                        currentUser?.displayName
                     }
                 </span>
             </Link>

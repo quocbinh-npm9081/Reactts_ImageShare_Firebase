@@ -1,16 +1,16 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { registerApi, loginApi, facebookApi, googleApi, forgotPasswordApi, signOutApi } from '../actions/authAction';
 import { RootState } from '../store';
-import { IRegister, ILogin } from '../types';
+import { IRegister, ILogin, IAuth } from '../types';
 
 
 export interface AuthState {
-    currentUser?: any,
+    currentUser?: IAuth,
     loading: boolean
 }
 
 
-export const initialState = {
+export const initialState: AuthState = {
     currentUser: undefined,
     loading: false
 }
